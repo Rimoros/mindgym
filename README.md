@@ -1,5 +1,5 @@
 # MindGym
-
+[Live demo — Try MindGym](https://rimoros.github.io/mindgym/)
 A small, browser-based practice app for **memory, attention, and logic**. Built with plain HTML, CSS, and JavaScript. No build step, dependencies, account, API key, or paid hosting required.
 
 This project expands an earlier MindGym prototype. The redesign restores its difficulty and points system, replaces the exercise controller, and adds a practice journal. It is an educational game, **not an IQ test or medical assessment**. No scientific claims about cognitive transfer are made.
