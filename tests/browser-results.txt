@@ -1,0 +1,291 @@
+PASS digits: empty memory answer validation
+PASS digits: empty answer has no penalty
+PASS digits/easy: correct answer feedback
+PASS digits/easy: exact point change
+PASS digits/easy: duplicate submission blocked
+PASS digits: empty memory answer validation
+PASS digits: empty answer has no penalty
+PASS digits/easy: incorrect answer feedback
+PASS digits/easy: exact point change
+PASS digits/easy: duplicate submission blocked
+PASS pattern: empty memory answer validation
+PASS pattern: empty answer has no penalty
+PASS pattern/easy: correct answer feedback
+PASS pattern/easy: exact point change
+PASS pattern/easy: duplicate submission blocked
+PASS pattern: empty memory answer validation
+PASS pattern: empty answer has no penalty
+PASS pattern/easy: incorrect answer feedback
+PASS pattern/easy: exact point change
+PASS pattern/easy: duplicate submission blocked
+PASS objects: empty memory answer validation
+PASS objects: empty answer has no penalty
+PASS objects/easy: correct answer feedback
+PASS objects/easy: exact point change
+PASS objects/easy: duplicate submission blocked
+PASS objects: empty memory answer validation
+PASS objects: empty answer has no penalty
+PASS objects/easy: incorrect answer feedback
+PASS objects/easy: exact point change
+PASS objects/easy: duplicate submission blocked
+PASS digits: empty memory answer validation
+PASS digits: empty answer has no penalty
+PASS digits/medium: correct answer feedback
+PASS digits/medium: exact point change
+PASS digits/medium: duplicate submission blocked
+PASS digits: empty memory answer validation
+PASS digits: empty answer has no penalty
+PASS digits/medium: incorrect answer feedback
+PASS digits/medium: exact point change
+PASS digits/medium: duplicate submission blocked
+PASS pattern: empty memory answer validation
+PASS pattern: empty answer has no penalty
+PASS pattern/medium: correct answer feedback
+PASS pattern/medium: exact point change
+PASS pattern/medium: duplicate submission blocked
+PASS pattern: empty memory answer validation
+PASS pattern: empty answer has no penalty
+PASS pattern/medium: incorrect answer feedback
+PASS pattern/medium: exact point change
+PASS pattern/medium: duplicate submission blocked
+PASS objects: empty memory answer validation
+PASS objects: empty answer has no penalty
+PASS objects/medium: correct answer feedback
+PASS objects/medium: exact point change
+PASS objects/medium: duplicate submission blocked
+PASS objects: empty memory answer validation
+PASS objects: empty answer has no penalty
+PASS objects/medium: incorrect answer feedback
+PASS objects/medium: exact point change
+PASS objects/medium: duplicate submission blocked
+PASS digits: empty memory answer validation
+PASS digits: empty answer has no penalty
+PASS digits/hard: correct answer feedback
+PASS digits/hard: exact point change
+PASS digits/hard: duplicate submission blocked
+PASS digits: empty memory answer validation
+PASS digits: empty answer has no penalty
+PASS digits/hard: incorrect answer feedback
+PASS digits/hard: exact point change
+PASS digits/hard: duplicate submission blocked
+PASS pattern: empty memory answer validation
+PASS pattern: empty answer has no penalty
+PASS pattern/hard: correct answer feedback
+PASS pattern/hard: exact point change
+PASS pattern/hard: duplicate submission blocked
+PASS pattern: empty memory answer validation
+PASS pattern: empty answer has no penalty
+PASS pattern/hard: incorrect answer feedback
+PASS pattern/hard: exact point change
+PASS pattern/hard: duplicate submission blocked
+PASS objects: empty memory answer validation
+PASS objects: empty answer has no penalty
+PASS objects/hard: correct answer feedback
+PASS objects/hard: exact point change
+PASS objects/hard: duplicate submission blocked
+PASS objects: empty memory answer validation
+PASS objects: empty answer has no penalty
+PASS objects/hard: incorrect answer feedback
+PASS objects/hard: exact point change
+PASS objects/hard: duplicate submission blocked
+PASS odd/easy: empty answer validation
+PASS odd/easy: empty answer has no penalty
+PASS odd/easy: correct answer feedback
+PASS odd/easy: exact point change
+PASS odd/easy: duplicate submission blocked
+PASS odd/easy: empty answer validation
+PASS odd/easy: empty answer has no penalty
+PASS odd/easy: incorrect answer feedback
+PASS odd/easy: exact point change
+PASS odd/easy: duplicate submission blocked
+PASS search/easy: empty answer validation
+PASS search/easy: empty answer has no penalty
+PASS search/easy: correct answer feedback
+PASS search/easy: exact point change
+PASS search/easy: duplicate submission blocked
+PASS search/easy: empty answer validation
+PASS search/easy: empty answer has no penalty
+PASS search/easy: incorrect answer feedback
+PASS search/easy: exact point change
+PASS search/easy: duplicate submission blocked
+PASS color/easy: empty answer validation
+PASS color/easy: empty answer has no penalty
+PASS color/easy: correct answer feedback
+PASS color/easy: exact point change
+PASS color/easy: duplicate submission blocked
+PASS color/easy: empty answer validation
+PASS color/easy: empty answer has no penalty
+PASS color/easy: incorrect answer feedback
+PASS color/easy: exact point change
+PASS color/easy: duplicate submission blocked
+PASS odd/medium: empty answer validation
+PASS odd/medium: empty answer has no penalty
+PASS odd/medium: correct answer feedback
+PASS odd/medium: exact point change
+PASS odd/medium: duplicate submission blocked
+PASS odd/medium: empty answer validation
+PASS odd/medium: empty answer has no penalty
+PASS odd/medium: incorrect answer feedback
+PASS odd/medium: exact point change
+PASS odd/medium: duplicate submission blocked
+PASS search/medium: empty answer validation
+PASS search/medium: empty answer has no penalty
+PASS search/medium: correct answer feedback
+PASS search/medium: exact point change
+PASS search/medium: duplicate submission blocked
+PASS search/medium: empty answer validation
+PASS search/medium: empty answer has no penalty
+PASS search/medium: incorrect answer feedback
+PASS search/medium: exact point change
+PASS search/medium: duplicate submission blocked
+PASS color/medium: empty answer validation
+PASS color/medium: empty answer has no penalty
+PASS color/medium: correct answer feedback
+PASS color/medium: exact point change
+PASS color/medium: duplicate submission blocked
+PASS color/medium: empty answer validation
+PASS color/medium: empty answer has no penalty
+PASS color/medium: incorrect answer feedback
+PASS color/medium: exact point change
+PASS color/medium: duplicate submission blocked
+PASS odd/hard: empty answer validation
+PASS odd/hard: empty answer has no penalty
+PASS odd/hard: correct answer feedback
+PASS odd/hard: exact point change
+PASS odd/hard: duplicate submission blocked
+PASS odd/hard: empty answer validation
+PASS odd/hard: empty answer has no penalty
+PASS odd/hard: incorrect answer feedback
+PASS odd/hard: exact point change
+PASS odd/hard: duplicate submission blocked
+PASS search/hard: empty answer validation
+PASS search/hard: empty answer has no penalty
+PASS search/hard: correct answer feedback
+PASS search/hard: exact point change
+PASS search/hard: duplicate submission blocked
+PASS search/hard: empty answer validation
+PASS search/hard: empty answer has no penalty
+PASS search/hard: incorrect answer feedback
+PASS search/hard: exact point change
+PASS search/hard: duplicate submission blocked
+PASS color/hard: empty answer validation
+PASS color/hard: empty answer has no penalty
+PASS color/hard: correct answer feedback
+PASS color/hard: exact point change
+PASS color/hard: duplicate submission blocked
+PASS color/hard: empty answer validation
+PASS color/hard: empty answer has no penalty
+PASS color/hard: incorrect answer feedback
+PASS color/hard: exact point change
+PASS color/hard: duplicate submission blocked
+PASS sequence/easy: empty answer validation
+PASS sequence/easy: empty answer has no penalty
+PASS sequence/easy: correct answer feedback
+PASS sequence/easy: exact point change
+PASS sequence/easy: duplicate submission blocked
+PASS sequence/easy: empty answer validation
+PASS sequence/easy: empty answer has no penalty
+PASS sequence/easy: incorrect answer feedback
+PASS sequence/easy: exact point change
+PASS sequence/easy: duplicate submission blocked
+PASS rule/easy: empty answer validation
+PASS rule/easy: empty answer has no penalty
+PASS rule/easy: correct answer feedback
+PASS rule/easy: exact point change
+PASS rule/easy: duplicate submission blocked
+PASS rule/easy: empty answer validation
+PASS rule/easy: empty answer has no penalty
+PASS rule/easy: incorrect answer feedback
+PASS rule/easy: exact point change
+PASS rule/easy: duplicate submission blocked
+PASS deduction/easy: empty answer validation
+PASS deduction/easy: empty answer has no penalty
+PASS deduction/easy: correct answer feedback
+PASS deduction/easy: exact point change
+PASS deduction/easy: duplicate submission blocked
+PASS deduction/easy: empty answer validation
+PASS deduction/easy: empty answer has no penalty
+PASS deduction/easy: incorrect answer feedback
+PASS deduction/easy: exact point change
+PASS deduction/easy: duplicate submission blocked
+PASS sequence/medium: empty answer validation
+PASS sequence/medium: empty answer has no penalty
+PASS sequence/medium: correct answer feedback
+PASS sequence/medium: exact point change
+PASS sequence/medium: duplicate submission blocked
+PASS sequence/medium: empty answer validation
+PASS sequence/medium: empty answer has no penalty
+PASS sequence/medium: incorrect answer feedback
+PASS sequence/medium: exact point change
+PASS sequence/medium: duplicate submission blocked
+PASS rule/medium: empty answer validation
+PASS rule/medium: empty answer has no penalty
+PASS rule/medium: correct answer feedback
+PASS rule/medium: exact point change
+PASS rule/medium: duplicate submission blocked
+PASS rule/medium: empty answer validation
+PASS rule/medium: empty answer has no penalty
+PASS rule/medium: incorrect answer feedback
+PASS rule/medium: exact point change
+PASS rule/medium: duplicate submission blocked
+PASS deduction/medium: empty answer validation
+PASS deduction/medium: empty answer has no penalty
+PASS deduction/medium: correct answer feedback
+PASS deduction/medium: exact point change
+PASS deduction/medium: duplicate submission blocked
+PASS deduction/medium: empty answer validation
+PASS deduction/medium: empty answer has no penalty
+PASS deduction/medium: incorrect answer feedback
+PASS deduction/medium: exact point change
+PASS deduction/medium: duplicate submission blocked
+PASS sequence/hard: empty answer validation
+PASS sequence/hard: empty answer has no penalty
+PASS sequence/hard: correct answer feedback
+PASS sequence/hard: exact point change
+PASS sequence/hard: duplicate submission blocked
+PASS sequence/hard: empty answer validation
+PASS sequence/hard: empty answer has no penalty
+PASS sequence/hard: incorrect answer feedback
+PASS sequence/hard: exact point change
+PASS sequence/hard: duplicate submission blocked
+PASS rule/hard: empty answer validation
+PASS rule/hard: empty answer has no penalty
+PASS rule/hard: correct answer feedback
+PASS rule/hard: exact point change
+PASS rule/hard: duplicate submission blocked
+PASS rule/hard: empty answer validation
+PASS rule/hard: empty answer has no penalty
+PASS rule/hard: incorrect answer feedback
+PASS rule/hard: exact point change
+PASS rule/hard: duplicate submission blocked
+PASS deduction/hard: empty answer validation
+PASS deduction/hard: empty answer has no penalty
+PASS deduction/hard: correct answer feedback
+PASS deduction/hard: exact point change
+PASS deduction/hard: duplicate submission blocked
+PASS deduction/hard: empty answer validation
+PASS deduction/hard: empty answer has no penalty
+PASS deduction/hard: incorrect answer feedback
+PASS deduction/hard: exact point change
+PASS deduction/hard: duplicate submission blocked
+PASS Canceled memory timer cannot change a new round
+PASS Five-round session summary
+PASS Session can be restarted
+PASS Interrupted weekly observation returns to ready
+PASS Reload keeps the same weekly question
+PASS digits: empty memory answer validation
+PASS digits: empty answer has no penalty
+PASS pattern: empty memory answer validation
+PASS pattern: empty answer has no penalty
+PASS objects: empty memory answer validation
+PASS objects: empty answer has no penalty
+PASS Weekly assessment completes
+PASS Seven-day lock hides restart action
+PASS Weekly saves all nine correct results
+PASS Completed assessment clears active attempt
+PASS Weekly cooldown survives reload
+PASS Progress chart is built from actual attempts
+PASS History displays saved attempts
+PASS History filter updates results
+COMPLETE — 289 checks passed. No failures.
+Original browser progress restored.
