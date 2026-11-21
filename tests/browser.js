@@ -9,6 +9,7 @@ const find=s=>doc().querySelector(s);
 const click=s=>{const el=find(s);if(!el)throw Error('Missing '+s);el.click();};
 const score=()=>Number(find('#header-points').textContent);
 const select=(s,v)=>{const el=find(s);el.value=v;el.dispatchEvent(new Event('change',{bubbles:true}));};
+async function routed(name){for(let i=0;i<100;i++){if(doc().querySelector(`[data-nav="${name}"][aria-current]`)&&!find('main').inert)return;await sleep(20);}throw Error('Route did not settle: '+name);}
 async function ready(){for(let i=0;i<200;i++){if(find('#exercise'))return;await sleep(25);}throw Error('UI did not load');}
 function input(v){const el=find('#answer');el.value=String(v);el.dispatchEvent(new Event('input',{bubbles:true}));}
 function submit(){let form=find('#answer-form');if(form)form.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));else if(find('[data-action="check"]'))click('[data-action="check"]');}
@@ -49,9 +50,20 @@ document.querySelector('#run').onclick=async()=>{document.querySelector('#run').
  // Complete a five-round session in the actual UI.
  click('[data-action="restart"]');click('[data-skill="logic"]');select('#exercise-select','sequence');for(let i=0;i<5;i++){await answer('sequence');click('[data-action="next"]');}assert(find('#exercise').textContent.includes('Practice, complete.'),'Five-round session summary');click('[data-action="restart"]');assert(!!find('#answer-form'),'Session can be restarted');
  // Begin, interrupt, reload, resume and complete a fixed weekly assessment.
- frame.contentWindow.location.hash='weekly';await sleep(70);click('[data-action="weekly-start"]');click('[data-action="begin"]');let stored=JSON.parse(localStorage.getItem(key));const firstID=stored.activeWeekly.rounds[0].id;frame.contentWindow.location.reload();await new Promise(r=>frame.onload=r);await sleep(70);assert(!!find('[data-action="begin"]'),'Interrupted weekly observation returns to ready');assert(JSON.parse(localStorage.getItem(key)).activeWeekly.rounds[0].id===firstID,'Reload keeps the same weekly question');
+ frame.contentWindow.location.hash='weekly';await routed('weekly');click('[data-action="weekly-start"]');click('[data-action="begin"]');let stored=JSON.parse(localStorage.getItem(key));const firstID=stored.activeWeekly.rounds[0].id;frame.contentWindow.location.reload();await new Promise(r=>frame.onload=r);await sleep(70);assert(!!find('[data-action="begin"]'),'Interrupted weekly observation returns to ready');assert(JSON.parse(localStorage.getItem(key)).activeWeekly.rounds[0].id===firstID,'Reload keeps the same weekly question');
  for(const kind of ['digits','pattern','objects','odd','search','color','sequence','rule','deduction']){await answer(kind);if(kind!=='deduction')click('[data-action="next"]');}
  assert(find('main').textContent.includes('CHECK-IN COMPLETE'),'Weekly assessment completes');assert(!find('[data-action="weekly-start"]'),'Seven-day lock hides restart action');stored=JSON.parse(localStorage.getItem(key));assert(stored.weekly.length===1&&stored.weekly[0].results.filter(r=>r.correct).length===9,'Weekly saves all nine correct results');assert(stored.activeWeekly===null,'Completed assessment clears active attempt');
- frame.contentWindow.location.reload();await new Promise(r=>frame.onload=r);await sleep(70);assert(!find('[data-action="weekly-start"]'),'Weekly cooldown survives reload');frame.contentWindow.location.hash='progress';await sleep(70);assert(!!find('.chart'),'Progress chart is built from actual attempts');assert(doc().querySelectorAll('.history tbody tr').length>0,'History displays saved attempts');select('#history-skill','attention');assert([...doc().querySelectorAll('.history:first-of-type tbody tr')].some(r=>r.textContent.includes('Attention')),'History filter updates results');
+ frame.contentWindow.location.reload();await new Promise(r=>frame.onload=r);await sleep(70);assert(!find('[data-action="weekly-start"]'),'Weekly cooldown survives reload');frame.contentWindow.location.hash='progress';await routed('progress');assert(!!find('.chart'),'Progress chart is built from actual attempts');assert(doc().querySelectorAll('.history tbody tr').length>0,'History displays saved attempts');select('#history-skill','attention');assert([...doc().querySelectorAll('.history:first-of-type tbody tr')].some(r=>r.textContent.includes('Attention')),'History filter updates results');
+ // Race successive navigation requests against both exit and entrance animations.
+ const routes=['home','train','weekly','progress','home','weekly','train','progress'];
+ for(const name of routes){click(`[data-nav="${name}"]`);await sleep(25);}
+ await routed('progress');await sleep(350);
+ assert(find('h1').textContent.includes('Small steps'),'Rapid navigation lands on the latest destination');
+ assert(doc().querySelectorAll('main>.view-enter').length===1,'Transitions keep only one content view');
+ assert(!find('main').inert&&!find('main').classList.contains('route-leaving'),'Latest content is interactive after rapid navigation');
+ const nav=doc().querySelector('nav'),link=nav.querySelector('[aria-current]'),indicator=frame.contentWindow.getComputedStyle(nav,'::after');
+ assert(Math.abs(parseFloat(indicator.width)-link.getBoundingClientRect().width)<1,'Underline matches the active link width');
+ assert(!find('.view-enter').getAnimations().some(a=>a.playState==='running'),'Entrance settles without a stale animation');
+ if(frame.contentWindow.matchMedia('(prefers-reduced-motion: reduce)').matches)assert(parseFloat(indicator.transitionDuration)===0,'Reduced motion disables underline transitions');
  line(`COMPLETE — ${passed} checks passed. No failures.`);
  }catch(error){status.textContent='FAILED';line('FAIL '+error.stack+'\nUI: '+doc().querySelector('main')?.textContent);status.textContent='FAILED';}finally{if(backup===null)localStorage.removeItem(key);else localStorage.setItem(key,backup);line('Original browser progress restored.');document.querySelector('#run').disabled=false;}};

@@ -4,6 +4,8 @@ const M=MindGym,KEY='mindgym_product_v5',names={memory:'Memory',attention:'Atten
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const date=s=>new Date(s).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),time=s=>new Date(s).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
 const cap=s=>s[0].toUpperCase()+s.slice(1),btn=(label,action,style='')=>`<button class="btn ${style}" data-action="${action}">${label}</button>`;
+const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+let routeTimer=null;
 let storageOk=true,data=load(),view='',skill='memory',level='easy',kind='mixed',round=null,practice=[],sessionComplete=false,timer=null,timerToken=0,toastTimer,filter='all',sourceFilter='all',page=0;
 function load(){
  try{let raw=localStorage.getItem(KEY);if(raw)return M.clean(JSON.parse(raw));
@@ -20,10 +22,27 @@ function current(){return view==='weekly'?data.activeWeekly?.rounds.find(r=>r.st
 function activeWeeklyRound(){const a=data.activeWeekly;return a?a.rounds[a.index]:null;}
 function active(){return view==='weekly'?activeWeeklyRound():round;}
 function cancelExposure(){stopTimer();if(round?.status==='show')round.status='ready';if(data.activeWeekly){let r=activeWeeklyRound();if(r?.status==='show'){r.status='ready';save();}}}
-function route(){let next=location.hash.slice(1);if(!['home','train','weekly','progress','about'].includes(next))next='home';cancelExposure();view=next;document.querySelectorAll('[data-nav]').forEach(a=>{if(a.dataset.nav===next)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});render();window.scrollTo(0,0);}
-function navigate(v){if(location.hash==='#'+v){cancelExposure();view=v;render();}else location.hash=v;}
+// Only route changes animate; exercise feedback and timers render immediately.
+function moveNavIndicator(){
+ const nav=document.querySelector('nav'),link=nav.querySelector('[aria-current]');
+ nav.classList.toggle('has-active',!!link);
+ if(!link)return;
+ const box=link.getBoundingClientRect(),parent=nav.getBoundingClientRect();
+ nav.style.setProperty('--indicator-x',`${box.left-parent.left}px`);
+ nav.style.setProperty('--indicator-width',`${box.width}px`);
+}
+function route(){
+ let next=location.hash.slice(1);if(!['home','train','weekly','progress','about'].includes(next))next='home';
+ clearTimeout(routeTimer);routeTimer=null;cancelExposure();
+ const main=$('#main'),animate=!!view&&next!==view&&!reducedMotion.matches;
+ document.querySelectorAll('[data-nav]').forEach(a=>{if(a.dataset.nav===next)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+ moveNavIndicator();
+ const commit=()=>{routeTimer=null;view=next;main.classList.remove('route-leaving');main.inert=false;render(animate);window.scrollTo(0,0);};
+ if(animate){main.inert=true;main.classList.add('route-leaving');routeTimer=setTimeout(commit,60);}else commit();
+}
+function navigate(v){if(location.hash==='#'+v)route();else location.hash=v;}
 function head(eye,title,copy){return `<div class="page-head"><div class="eyebrow">${eye}</div><h1>${title}</h1><p>${copy}</p></div>`;}
-function render(){updateHeader();let html=view==='home'?home():view==='train'?training():view==='progress'?progress():view==='weekly'?weekly():about();$('#main').innerHTML=`<div class="view-enter">${!storageOk?'<div class="empty" role="status">Browser storage is unavailable. Progress is temporary; use Export progress to keep a backup.</div>':''}${html}</div>`;}
+function render(animate=false){if(routeTimer!==null)return;updateHeader();let html=view==='home'?home():view==='train'?training():view==='progress'?progress():view==='weekly'?weekly():about();$('#main').innerHTML=`<div class="view-enter${animate?' view-arrive':''}">${!storageOk?'<div class="empty" role="status">Browser storage is unavailable. Progress is temporary; use Export progress to keep a backup.</div>':''}${html}</div>`;}
 function weeklyNext(){const dates=[...data.weekly.map(w=>Date.parse(w.date)),Date.parse(data.legacy?.lastWeekly||'')].filter(Number.isFinite);return dates.length?Math.max(...dates)+M.WEEK:0;}
 function home(){const s=M.summary(data.sessions),st=M.streak(data.sessions),today=data.sessions.filter(x=>M.dayKey(x.date)===M.dayKey(Date.now())).length;
  return `<section class="hero"><div><div class="eyebrow">A small daily ritual</div><h1>A little sharper.<br><em>Every day.</em></h1><p>Make room for a mental warm-up. Playful challenges for your memory, attention, and logic. One small win at a time.</p><div class="actions">${btn('Find your focus <span>↗</span>','practice')}<a class="link" href="#about">How it works</a></div><div class="hero-note">NO ACCOUNT. NO NOISE. JUST PRACTICE.</div></div><div class="visual" aria-hidden="true"><span class="visual-label mono">Your mind, in motion.</span><svg viewBox="0 0 440 340" fill="none"><defs><path id="hero-caption-curve" d="M255 78 Q330 18 410 72"/></defs><path d="M25 285H418M25 55H418" stroke="#cdd3c3" stroke-dasharray="3 6"/><g class="shape-drift"><rect x="66" y="82" width="175" height="175" rx="25" transform="rotate(-12 66 82)" fill="#d9ed9a" stroke="#203c33" stroke-width="1.5"/><path d="M107 140h70m-70 22h70m-70 22h42" transform="rotate(-12 107 140)" stroke="#203c33" stroke-width="3"/><text x="94" y="227" fill="#203c33" font-family="monospace" font-size="11" transform="rotate(-12 94 227)">01 / REMEMBER</text></g><g class="shape-drift two"><circle cx="288" cy="200" r="96" fill="#eb967a" stroke="#203c33" stroke-width="1.5"/><circle cx="288" cy="185" r="37" stroke="#203c33"/><circle cx="288" cy="185" r="19" stroke="#203c33"/><circle cx="288" cy="185" r="5" fill="#203c33"/><text x="249" y="251" fill="#203c33" font-family="monospace" font-size="11">02 / NOTICE</text></g><path d="M207 26l17 10-14 10m-18-4h27M45 259l9 9m-9 0 9-9" stroke="#203c33" stroke-width="2"/><text fill="#203c33" font-family="Georgia,serif" font-size="19" letter-spacing="-.4"><textPath href="#hero-caption-curve" textLength="146" lengthAdjust="spacing">a fresh perspective</textPath></text><circle cx="411" cy="112" r="18" fill="#203c33"/><path d="m403 112 6 6 11-13" stroke="#d9ed9a" stroke-width="2"/></svg><span class="visual-bottom">PRACTICE MAKES PROGRESS.</span></div></section>
@@ -101,6 +120,8 @@ function updateSelection(){const r=active();document.querySelectorAll('[data-cel
 document.addEventListener('keydown',e=>{if(e.target.matches('[data-cell]')&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();const r=active(),n=Number(e.target.dataset.cell),step={ArrowLeft:-1,ArrowRight:1,ArrowUp:-r.size,ArrowDown:r.size}[e.key];$(`[data-cell="${Math.max(0,Math.min(r.size*r.size-1,n+step))}"]`)?.focus();}});
 document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();$('#main').focus();});
 window.addEventListener('hashchange',route);
+new ResizeObserver(moveNavIndicator).observe(document.querySelector('nav'));
+reducedMotion.addEventListener('change',()=>{if(routeTimer!==null)route();});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){const r=active();if(r?.status==='show'&&Date.now()>=r.deadline){stopTimer();r.status='answer';if(view==='weekly')save();renderExercise();}}});
 window.addEventListener('storage',e=>{if(e.key!==KEY)return;stopTimer();data=load();if(data.activeWeekly){const r=activeWeeklyRound();if(r?.status==='show')r.status='ready';}round=null;practice=[];sessionComplete=false;render();toast('Progress updated from another tab.');});
 // Interrupted observations restart with the same exercise, never a new weekly question.
