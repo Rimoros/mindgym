@@ -57,12 +57,16 @@ document.querySelector('#run').onclick=async()=>{document.querySelector('#run').
  // Race successive navigation requests against both exit and entrance animations.
  const routes=['home','train','weekly','progress','home','weekly','train','progress'];
  for(const name of routes){click(`[data-nav="${name}"]`);await sleep(25);}
- await routed('progress');await sleep(350);
+ await routed('progress');
+ // Wait for painted frames too: background tabs may throttle CSS independently of timers.
+ await new Promise(resolve=>frame.contentWindow.requestAnimationFrame(()=>frame.contentWindow.requestAnimationFrame(resolve)));
+ await sleep(350);
  assert(find('h1').textContent.includes('Small steps'),'Rapid navigation lands on the latest destination');
  assert(doc().querySelectorAll('main>.view-enter').length===1,'Transitions keep only one content view');
  assert(!find('main').inert&&!find('main').classList.contains('route-leaving'),'Latest content is interactive after rapid navigation');
  const nav=doc().querySelector('nav'),link=nav.querySelector('[aria-current]'),indicator=frame.contentWindow.getComputedStyle(nav,'::after');
- assert(Math.abs(parseFloat(indicator.width)-link.getBoundingClientRect().width)<1,'Underline matches the active link width');
+ for(let i=0;i<60&&Math.abs(parseFloat(frame.contentWindow.getComputedStyle(nav,'::after').width)-link.getBoundingClientRect().width)>=1;i++)await sleep(50);
+ assert(Math.abs(parseFloat(frame.contentWindow.getComputedStyle(nav,'::after').width)-link.getBoundingClientRect().width)<1,'Underline matches the active link width');
  assert(!find('.view-enter').getAnimations().some(a=>a.playState==='running'),'Entrance settles without a stale animation');
  if(frame.contentWindow.matchMedia('(prefers-reduced-motion: reduce)').matches)assert(parseFloat(indicator.transitionDuration)===0,'Reduced motion disables underline transitions');
  line(`COMPLETE — ${passed} checks passed. No failures.`);
