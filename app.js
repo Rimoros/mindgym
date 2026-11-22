@@ -114,10 +114,20 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-action],[
  if(el.dataset.level){cancelExposure();level=el.dataset.level;newRound();render();return;}
  const r=active();if(el.hasAttribute('data-cell')&&r?.status==='answer'){let n=Number(el.dataset.cell);r.selected=['pattern','search'].includes(r.kind)?r.selected.includes(n)?r.selected.filter(x=>x!==n):[...r.selected,n]:[n];updateSelection();return;}
  if(el.hasAttribute('data-choice')&&r?.status==='answer'){r.selected=[Number(el.dataset.choice)];updateSelection();return;}
- switch(el.dataset.action){case 'practice':navigate('train');break;case 'begin':begin();break;case 'check':check();break;case 'next':next();break;case 'restart':cancelExposure();practice=[];newRound();render();toast('Fresh session. Previous answers remain in history.');break;case 'restart-round':cancelExposure();newRound();render();break;case 'weekly-start':startWeekly();break;case 'next-page':page++;render();break;case 'prev-page':page=Math.max(0,page-1);render();break;case 'export':exportData();break;case 'reset-request':$('#reset-panel').innerHTML='<div class="empty"><p>Delete all progress in this browser, including assessments and any unfinished attempt? Export a backup first if you want to keep your results.</p><div class="actions">'+btn('Delete my progress','reset-confirm','light')+btn('Keep my progress','reset-cancel','light')+'</div></div>';break;case 'reset-cancel':$('#reset-panel').innerHTML='';break;case 'reset-confirm':cancelExposure();data=M.blank();practice=[];round=null;save();render();toast('Saved progress reset.');break;}
+ switch(el.dataset.action){case 'practice':navigate('train');break;case 'begin':begin();break;case 'check':check();break;case 'next':next();break;case 'restart':cancelExposure();practice=[];newRound();render();toast('Fresh session. Previous answers remain in history.');break;case 'restart-round':cancelExposure();newRound();render();break;case 'weekly-start':startWeekly();break;case 'next-page':page++;render();break;case 'prev-page':page=Math.max(0,page-1);render();break;case 'export':exportData();break;case 'reset-request':$('#reset-panel').innerHTML='<div class="empty"><p>Delete all progress in this browser, including assessments and any unfinished attempt? Export a backup first if you want to keep your results.</p><div class="actions">'+btn('Delete my progress','reset-confirm','light')+btn('Keep my progress','reset-cancel','light')+'</div></div>';break;case 'reset-cancel':$('#reset-panel').innerHTML='';break;case 'reset-confirm':cancelExposure();data=M.blank();practice=[];round=null;sessionComplete=false;save();render();toast('Saved progress reset.');break;}
 });
 function updateSelection(){const r=active();document.querySelectorAll('[data-cell],[data-choice]').forEach(el=>{const n=Number(el.dataset.cell??el.dataset.choice),selected=r.selected.includes(n);el.classList.toggle('selected',selected);el.setAttribute('aria-pressed',selected);});if($('#selection-count'))$('#selection-count').textContent=`${r.selected.length} selected${['pattern','search'].includes(r.kind)?' / '+r.answer.length+' needed':''}`;if($('#answer-error'))$('#answer-error').textContent='';if(view==='weekly')save();}
-document.addEventListener('keydown',e=>{if(e.target.matches('[data-cell]')&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();const r=active(),n=Number(e.target.dataset.cell),step={ArrowLeft:-1,ArrowRight:1,ArrowUp:-r.size,ArrowDown:r.size}[e.key];$(`[data-cell="${Math.max(0,Math.min(r.size*r.size-1,n+step))}"]`)?.focus();}});
+document.addEventListener('keydown',e=>{
+ const tile=e.target.closest('[data-cell]:enabled');
+ if(!tile||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
+ const {size}=active();
+ const index=Number(tile.dataset.cell),row=Math.floor(index/size),column=index%size;
+ const nextRow=row+(e.key==='ArrowDown'?1:e.key==='ArrowUp'?-1:0);
+ const nextColumn=column+(e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0);
+ e.preventDefault();
+ if(nextRow<0||nextRow>=size||nextColumn<0||nextColumn>=size)return;
+ tile.closest('.grid').querySelector(`[data-cell="${nextRow*size+nextColumn}"]`)?.focus();
+});
 document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();$('#main').focus();});
 window.addEventListener('hashchange',route);
 new ResizeObserver(moveNavIndicator).observe(document.querySelector('nav'));
