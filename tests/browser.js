@@ -49,6 +49,17 @@ document.querySelector('#run').onclick=async()=>{document.querySelector('#run').
  click('[data-action="restart"]');click('[data-skill="memory"]');click('[data-level="hard"]');select('#exercise-select','digits');click('[data-action="begin"]');click('[data-level="easy"]');select('#exercise-select','pattern');await sleep(3200);assert(!!find('[data-action="begin"]'),'Canceled memory timer cannot change a new round');
  // Complete a five-round session in the actual UI.
  click('[data-action="restart"]');click('[data-skill="logic"]');select('#exercise-select','sequence');for(let i=0;i<5;i++){await answer('sequence');click('[data-action="next"]');}assert(find('#exercise').textContent.includes('Practice, complete.'),'Five-round session summary');click('[data-action="restart"]');assert(!!find('#answer-form'),'Session can be restarted');
+ // Arrow navigation stays in the current row or column at a grid edge.
+ click('[data-skill="attention"]');select('#exercise-select','odd');
+ const edge=find('[data-cell="3"]');
+ edge.focus();
+ const arrow=key=>doc().activeElement.dispatchEvent(new frame.contentWindow.KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));
+ arrow('ArrowRight');
+ assert(doc().activeElement===edge,'Right arrow keeps focus at the right edge');
+ arrow('ArrowDown');
+ assert(doc().activeElement.dataset.cell==='7','Down arrow moves to the same column');
+ arrow('ArrowLeft');
+ assert(doc().activeElement.dataset.cell==='6','Left arrow moves within the row');
  // Begin, interrupt, reload, resume and complete a fixed weekly assessment.
  frame.contentWindow.location.hash='weekly';await routed('weekly');click('[data-action="weekly-start"]');click('[data-action="begin"]');let stored=JSON.parse(localStorage.getItem(key));const firstID=stored.activeWeekly.rounds[0].id;frame.contentWindow.location.reload();await new Promise(r=>frame.onload=r);await sleep(70);assert(!!find('[data-action="begin"]'),'Interrupted weekly observation returns to ready');assert(JSON.parse(localStorage.getItem(key)).activeWeekly.rounds[0].id===firstID,'Reload keeps the same weekly question');
  for(const kind of ['digits','pattern','objects','odd','search','color','sequence','rule','deduction']){await answer(kind);if(kind!=='deduction')click('[data-action="next"]');}
@@ -69,5 +80,14 @@ document.querySelector('#run').onclick=async()=>{document.querySelector('#run').
  assert(Math.abs(parseFloat(frame.contentWindow.getComputedStyle(nav,'::after').width)-link.getBoundingClientRect().width)<1,'Underline matches the active link width');
  assert(!find('.view-enter').getAnimations().some(a=>a.playState==='running'),'Entrance settles without a stale animation');
  if(frame.contentWindow.matchMedia('(prefers-reduced-motion: reduce)').matches)assert(parseFloat(indicator.transitionDuration)===0,'Reduced motion disables underline transitions');
+ // Reset from About after completing a practice session.
+ frame.contentWindow.location.hash='train';await routed('train');
+ click('[data-skill="logic"]');select('#exercise-select','sequence');
+ for(let i=0;i<5;i++){await answer('sequence');click('[data-action="next"]');}
+ frame.contentWindow.location.hash='about';await routed('about');
+ click('[data-action="reset-request"]');click('[data-action="reset-confirm"]');
+ frame.contentWindow.location.hash='train';await routed('train');
+ assert(!!find('#answer-form')&&find('.session-mini').textContent.includes('0 / 5'),'Reset opens a fresh practice session');
+ assert(score()===0,'Reset clears earned points');
  line(`COMPLETE — ${passed} checks passed. No failures.`);
  }catch(error){status.textContent='FAILED';line('FAIL '+error.stack+'\nUI: '+doc().querySelector('main')?.textContent);status.textContent='FAILED';}finally{if(backup===null)localStorage.removeItem(key);else localStorage.setItem(key,backup);line('Original browser progress restored.');document.querySelector('#run').disabled=false;}};
