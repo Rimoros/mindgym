@@ -1,0 +1,16 @@
+{
+  "name": "mindgym",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser-based memory, attention, and logic practice.",
+  "license": "MIT",
+  "repository": "github:Rimoros/mindgym",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node tests/core.test.cjs",
+    "check": "node --check core.js && node --check app.js && node --check tests/browser.js && node scripts/dist.cjs --check",
+    "build": "node scripts/dist.cjs"
+  }
+}

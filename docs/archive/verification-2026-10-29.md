@@ -1,3 +1,5 @@
+> Historical record from 29 October 2026. This predates subsequent navigation changes. See [current testing notes](../testing.md) for the latest verification scope.
+
 # MindGym verification report
 
 Executed on 29 October 2026. This report separates actual execution from implementation review and remaining limits.
@@ -30,7 +32,7 @@ Checks include:
 
 ### Browser integration (Chromium)
 
-**289 passing assertions, zero failures in the completed run.** Full output is preserved in `tests/browser-results.txt`.
+**289 passing assertions, zero failures in the completed run.** Full output is preserved in `browser-results-2026-10-29.txt`.
 
 The suite loads the production app in an iframe and invokes its actual controls. It does not call internal controller functions or bypass the production validators. Memory tasks use their real 3–5 second observation periods.
 

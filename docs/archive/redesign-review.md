@@ -1,3 +1,5 @@
+> Historical redesign notes. Referenced prototype input files are not included in this repository. See [current design notes](../design.md).
+
 # UX and implementation review
 
 ## Source material examined
